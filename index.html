@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    
+    <!-- Weather Icons -->
+    <!-- Downloaded from https://erikflowers.github.io/weather-icons/ -->
+    <link rel="stylesheet" href="css/weather-icons.min.css">
+  </head>
+  
+  
+  <body>
+    <div class="container-fluid">
+      <p id="firstcall"></p>
+      <br>
+      <p id="vars"></p>
+      <br>
+      <p id="weatherapi"></p>
+      <br>
+      <h1><i id="mainIcon" class=""></i></h1>
+      <br>
+      <p id="weatherinfo"></p>
+    </div>
+    
+    
+    
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+    <script>
+            
+      $(document).ready(function() {
+        
+        // Client Location Information
+        var lat = 0;
+        var long = 0;
+        var city = "";
+        var countryCode = "";
+        
+        // Weather Variables
+        var tempCel;
+        var weather = "";
+        var weatherCode = "";
+        
+        // Mapping of weather codes to icon classes
+        var icon = {
+          // Thunderstorm
+          "2": "wi wi-thunderstorm",
+          // Drizzle
+          "3": "wi wi-sprinkle",
+          // Rain
+          "5": "wi wi-rain",
+          // Snow
+          "6": "wi wi-snow",
+          // Atmosphere
+          "7": "wi wi-fog",
+          // Clear
+          "800": "wi wi-day-sunny",
+          // Clouds
+          "8": "wi wi-cloudy",
+          // Extreme
+          "9": "fa fa-warning",
+          // Unknown
+          "n/a": "wi wi-na"          
+        }
+        
+        
+        // Use FreeGeoIP API to collect user location data
+        $.getJSON("http://freegeoip.net/json/", function(json) {
+          
+          // Set location variables from JSON results
+          lat = json.latitude;
+          long = json.longitude;
+          city = json.city;
+          countryCode = json.country_code;
+          
+          var text = JSON.stringify(json);
+          $("#firstcall").html(text);
+          $("#vars").html(lat + "," + long + "," + city + "," + countryCode);
+          console.log(lat);
+          
+          
+          setWeather();
+          
+
+        });
+        
+        
+        function setWeather() {
+          // OpenWeatherMap blank metric units call with appid
+          var weatherCall = "http://api.openweathermap.org/data/2.5/weather?lat=latvar&lon=longvar&units=metric&appid=a352e2967ae178b6765ad9e19e8e7eb3";
+
+          // Update weather API call with client lat and long values
+          weatherCall = weatherCall.replace(/latvar/gi, lat);
+          weatherCall = weatherCall.replace(/longvar/gi, long);
+
+          
+          $.getJSON(weatherCall, function(json) {
+            
+            // Set temperature variables
+            tempCel = Math.round(json["main"]["temp"]);
+            weather = json["weather"][0]["main"];
+            weatherCode = json["weather"][0]["id"].toString();
+            
+            var text = JSON.stringify(json);
+            $("#weatherapi").html(text);
+            $("#weatherinfo").html(weatherCode.toString());
+            
+            displayWeather();
+            
+          });
+
+        }
+        
+        
+        function displayWeather() {
+        console.log(weatherCode);
+          if (icon.hasOwnProperty(weatherCode)) {
+            $("#mainIcon").addClass(icon[weatherCode]);
+          } else if (icon.hasOwnProperty(weatherCode.charAt(0))) {
+            $("#mainIcon").addClass(icon[weatherCode.charAt(0)]);
+          } else {
+            $("#mainIcon").addClass(icon["n/a"]);
+          }
+        }
+        
+        
+      });
+    </script>
+  </body>
+  
+</html>
