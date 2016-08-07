@@ -22,15 +22,25 @@
   
   <body>
     <div class="container-fluid">
+      <p>Result from FreeGeoIP API "firstcall"</p>
       <p id="firstcall"></p>
       <br>
+      <p>Result from FreeGeoIP API (only 4 vars) "vars"</p>
       <p id="vars"></p>
       <br>
+      <p>Result from OpenWeatherMap API call "weatherapi"</p>
       <p id="weatherapi"></p>
       <br>
+      <p>Weather icon set by looking at wweather code from api call "mainIcon"</p>
       <h1><i id="mainIcon" class=""></i></h1>
       <br>
+      <p>3 letter weather code "weatherinfo":</p>
       <p id="weatherinfo"></p>
+      <br>
+      <p>Current Temperature</p>
+      <p id="temperature"></p>
+      <p>Current Unit</p>
+      <h1><i id="units" class="wi-celsius"></i></h1>
     </div>
     
     
@@ -41,106 +51,10 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     
-    <script>
-            
-      $(document).ready(function() {
-        
-        // Client Location Information
-        var lat = 0;
-        var long = 0;
-        var city = "";
-        var countryCode = "";
-        
-        // Weather Variables
-        var tempCel;
-        var weather = "";
-        var weatherCode = "";
-        
-        // Mapping of weather codes to icon classes
-        var icon = {
-          // Thunderstorm
-          "2": "wi wi-thunderstorm",
-          // Drizzle
-          "3": "wi wi-sprinkle",
-          // Rain
-          "5": "wi wi-rain",
-          // Snow
-          "6": "wi wi-snow",
-          // Atmosphere
-          "7": "wi wi-fog",
-          // Clear
-          "800": "wi wi-day-sunny",
-          // Clouds
-          "8": "wi wi-cloudy",
-          // Extreme
-          "9": "fa fa-warning",
-          // Unknown
-          "n/a": "wi wi-na"          
-        }
-        
-        
-        // Use FreeGeoIP API to collect user location data
-        $.getJSON("http://freegeoip.net/json/", function(json) {
-          
-          // Set location variables from JSON results
-          lat = json.latitude;
-          long = json.longitude;
-          city = json.city;
-          countryCode = json.country_code;
-          
-          var text = JSON.stringify(json);
-          $("#firstcall").html(text);
-          $("#vars").html(lat + "," + long + "," + city + "," + countryCode);
-          console.log(lat);
-          
-          
-          setWeather();
-          
-
-        });
-        
-        
-        function setWeather() {
-          // OpenWeatherMap blank metric units call with appid
-          var weatherCall = "http://api.openweathermap.org/data/2.5/weather?lat=latvar&lon=longvar&units=metric&appid=a352e2967ae178b6765ad9e19e8e7eb3";
-
-          // Update weather API call with client lat and long values
-          weatherCall = weatherCall.replace(/latvar/gi, lat);
-          weatherCall = weatherCall.replace(/longvar/gi, long);
-
-          
-          $.getJSON(weatherCall, function(json) {
-            
-            // Set temperature variables
-            tempCel = Math.round(json["main"]["temp"]);
-            weather = json["weather"][0]["main"];
-            weatherCode = json["weather"][0]["id"].toString();
-            
-            var text = JSON.stringify(json);
-            $("#weatherapi").html(text);
-            $("#weatherinfo").html(weatherCode.toString());
-            
-            displayWeather();
-            
-          });
-
-        }
-        
-        
-        function displayWeather() {
-        console.log(weatherCode);
-          if (icon.hasOwnProperty(weatherCode)) {
-            $("#mainIcon").addClass(icon[weatherCode]);
-          } else if (icon.hasOwnProperty(weatherCode.charAt(0))) {
-            $("#mainIcon").addClass(icon[weatherCode.charAt(0)]);
-          } else {
-            $("#mainIcon").addClass(icon["n/a"]);
-          }
-        }
-        
-        
-      });
-    </script>
+      
+    <!-- Main JS functionality of page -->
+    <script src="js/main.js"></script>
+    
   </body>
   
 </html>
