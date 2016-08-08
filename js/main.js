@@ -47,16 +47,12 @@ $(document).ready(function() {
     // Fire OpenWeatherMap API call to get weather
     $.getJSON(weatherCall, function(json) {
 
-      // Set temperature variables
+      // Set temperature, weather description, and weather code values
       tempCel = Math.round(json["main"]["temp"]);
       weather = json["weather"][0]["main"];
       weatherCode = json["weather"][0]["id"].toString();
-
-      var text = JSON.stringify(json);
-      $("#weatherapi").html(weather);
-      $("#weatherinfo").html(weatherCode.toString());
       
-      //Call function to display correct weather icon
+      //Call function to display temperature and correct weather icon
       displayWeather();
 
     });
@@ -76,6 +72,7 @@ $(document).ready(function() {
     }
     
     $("#temperature").html(tempCel.toString());
+    $("#weatherDescription").html(weather);
   }
   
   function changeUnits() {
@@ -115,11 +112,8 @@ $(document).ready(function() {
     city = json.city;
     countryCode = json.country_code;
     
-    // Print out results to screen
-    var text = JSON.stringify(json);
-    $("#firstcall").html(text);
-    $("#vars").html(lat + "," + long + "," + city + "," + countryCode);
-    console.log(lat);
+    // Show user city and country code
+    $("#location").html(city + ", " + countryCode);
 
 
     setWeather();
