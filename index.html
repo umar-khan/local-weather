@@ -14,22 +14,43 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     
+    
     <!-- Weather Icons -->
     <!-- Downloaded from https://erikflowers.github.io/weather-icons/ -->
     <link rel="stylesheet" href="css/weather-icons.min.css">
+    
+    <link rel="stylesheet" href="css/mystyles.css">
   </head>
   
   
   <body>
     
     <div class="container">
-      <h1><i id="mainIcon"></i></h1>
-      <h1 id="weatherDescription"></h1>
-      <h1><span id="temperature"></span><i id="units" class="wi wi-celsius"></i></h1>
-      <h1 id="location"></h1>
+      <div class="row">
+        
+        <div class="col-xs-4 col-xs-offset-2 col-md-3 col-md-offset-3">
+          <div class="text-right">
+            <h1><i id="mainIcon"></i></h1>
+            
+          </div>
+        </div>
+          
+        <div class="col-xs-6 col-md-4">
+          <div class="text-left left-border">
+            <h1><span id="temperature"></span><i id="units" class="wi wi-celsius"></i></h1>
+            <h1 id="weatherDescription"></h1>
+            <h1 id="location"></h1>
+          </div>
+        </div>
+        
+      </div>
     </div>
     
-    
+    <nav class="navbar navbar-fixed-bottom text-center">
+      <div class="container">
+        <p>Hellow</p>
+      </div>
+    </nav>
     
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

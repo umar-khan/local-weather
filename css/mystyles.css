@@ -1,0 +1,35 @@
+body {
+  padding-top: 40px;
+  background-color: #C62828;
+  color: #dedede;
+}
+
+h1 {
+  margin: 5px;
+  padding-left: 10px;
+}
+
+a {
+  color: #dedede !important;
+}
+
+a:hover {
+  opacity: 0.75;
+}
+
+
+.left-border {
+  border-left-color: #dedede;
+  border-left-width: 1px;
+  border-left-style: solid;
+}
+
+
+#mainIcon {
+  font-size: 100px;
+}
+
+#units {
+  cursor: pointer;
+  color: #42A5F5;
+}
