@@ -1,19 +1,25 @@
 $(document).ready(function() {
 
   // Client Location Information
+  // Latitude, Longitude, City, Country Code
   var lat = 0;
   var long = 0;
   var city = "";
   var countryCode = "";
 
   // Weather Variables
+  // tempCel = Temperature in celsius
+  // tempFahr = Temperature in fahrenheit
+  // weather = Description of weather (eg. Cloudy)
+  // weatherCode = 3 digit code defining weather
+  // units = Keeps track of units currently being displayed
   var tempCel;
   var tempFahr;
   var weather = "";
   var weatherCode = "";
   var units = "celsius";
 
-  // Mapping of weather codes to icon classes
+  // Mapping of weatherCode to icon classes to pick correct CSS icon
   var icon = {
     // Thunderstorm
     "2": "wi wi-thunderstorm",
@@ -36,7 +42,9 @@ $(document).ready(function() {
   };
   
   
+  // Builds and fires API call to pull weather data based on user's lat and long
   function setWeather() {
+    
     // OpenWeatherMap blank metric units call with appid. Defaults to return celsius
     var weatherCall = "http://api.openweathermap.org/data/2.5/weather?lat=latvar&lon=longvar&units=metric&appid=a352e2967ae178b6765ad9e19e8e7eb3";
 
@@ -52,14 +60,14 @@ $(document).ready(function() {
       weather = json["weather"][0]["main"];
       weatherCode = json["weather"][0]["id"].toString();
       
-      //Call function to display temperature and correct weather icon
+      //Call function to display weather icon, temperature, and weather description
       displayWeather();
 
     });
 
   }
 
-
+  // Displays appropriate weather icon, temperature, and weather description
   function displayWeather() {
     
     // Find the icon classes in the icon var which match the weathercode returned by the weather API
@@ -71,10 +79,12 @@ $(document).ready(function() {
       $("#mainIcon").addClass(icon["n/a"]);
     }
     
+    // Display temperature and weather description
     $("#temperature").html(tempCel.toString());
     $("#weatherDescription").html(weather);
   }
   
+  // Converts temperature celsius <-> fahrenheit and displays results 
   function changeUnits() {
     //Changes current temperature to match desired units
     if (isNaN(tempCel)) {
@@ -115,19 +125,12 @@ $(document).ready(function() {
     // Show user city and country code
     $("#location").html(city + ", " + countryCode);
 
-
+    // Call function to find weather data
     setWeather();
-
-
   });
   
   
+  // Monitors for click event to change temperature units
   $("#units").click(changeUnits);
   
-  
-
-
-
-
-
 });
