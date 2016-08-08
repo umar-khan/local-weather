@@ -8,8 +8,10 @@ $(document).ready(function() {
 
   // Weather Variables
   var tempCel;
+  var tempFahr;
   var weather = "";
   var weatherCode = "";
+  var units = "celsius";
 
   // Mapping of weather codes to icon classes
   var icon = {
@@ -35,7 +37,7 @@ $(document).ready(function() {
   
   
   function setWeather() {
-    // OpenWeatherMap blank metric units call with appid. Defaults to return celcius
+    // OpenWeatherMap blank metric units call with appid. Defaults to return celsius
     var weatherCall = "http://api.openweathermap.org/data/2.5/weather?lat=latvar&lon=longvar&units=metric&appid=a352e2967ae178b6765ad9e19e8e7eb3";
 
     // Update weather API call with client lat and long values
@@ -51,7 +53,7 @@ $(document).ready(function() {
       weatherCode = json["weather"][0]["id"].toString();
 
       var text = JSON.stringify(json);
-      $("#weatherapi").html(text);
+      $("#weatherapi").html(weather);
       $("#weatherinfo").html(weatherCode.toString());
       
       //Call function to display correct weather icon
@@ -75,6 +77,33 @@ $(document).ready(function() {
     
     $("#temperature").html(tempCel.toString());
   }
+  
+  function changeUnits() {
+    //Changes current temperature to match desired units
+    if (isNaN(tempCel)) {
+      // Do nothing if tempCel value is not set
+      
+    } else if (units == "celsius") {
+      // If units are currently celsius, convert to fahrenheit
+      tempFahr = Math.round((tempCel*1.8) + 32);
+      // Display Fahrenheit value
+      $("#temperature").html(tempFahr.toString());
+      // Update unit icon
+      $("#units").removeClass("wi-celsius");
+      $("#units").addClass("wi-fahrenheit");
+      // Update units to keep track of current unit
+      units = "fahrenheit";
+      
+    } else if (units == "fahrenheit") {
+      // Display Celsius value
+      $("#temperature").html(tempCel.toString());
+      // Update unit icon
+      $("#units").removeClass("wi-fahrenheit");
+      $("#units").addClass("wi-celsius");
+      // Update units to keep track of current unit
+      units = "celsius";
+    }
+  }
 
 
   // Use FreeGeoIP API to collect user location data
@@ -97,6 +126,11 @@ $(document).ready(function() {
 
 
   });
+  
+  
+  $("#units").click(changeUnits);
+  
+  
 
 
 
