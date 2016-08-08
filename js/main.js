@@ -114,13 +114,13 @@ $(document).ready(function() {
 
 
   // Use FreeGeoIP API to collect user location data
-  $.getJSON("http://freegeoip.net/json/", function(json) {
+  $.getJSON("http://ip-api.com/json", function(json) {
 
     // Set location variables from JSON results
-    lat = json.latitude;
-    long = json.longitude;
+    lat = json.lat;
+    long = json.lon;
     city = json.city;
-    countryCode = json.country_code;
+    countryCode = json.countryCode;
     
     // Show user city and country code
     $("#location").html(city + ", " + countryCode);
